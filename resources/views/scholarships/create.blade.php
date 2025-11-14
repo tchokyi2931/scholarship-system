@@ -10,14 +10,14 @@
 <form action="{{ route('scholarships.store') }}" method="POST">
     @csrf
 
-    <label>Name:</label><br>
+    <label>Name:</label>
     <input type="text" name="name" required><br><br>
 
-    <label>Amount:</label><br>
+    <label>Amount:</label>
     <input type="number" name="amount" required><br><br>
 
-    <label>Description:</label><br>
-    <textarea name="description" required></textarea><br><br>
+    <label>Description:</label>
+    <input type="text" name="description"><br><br>
 
     <button type="submit">Save</button>
 </form>

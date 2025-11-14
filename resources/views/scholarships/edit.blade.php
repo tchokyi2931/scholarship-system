@@ -11,18 +11,17 @@
     @csrf
     @method('PUT')
 
-    <label>Name:</label><br>
+    <label>Name:</label>
     <input type="text" name="name" value="{{ $scholarship->name }}" required><br><br>
 
-    <label>Amount:</label><br>
+    <label>Amount:</label>
     <input type="number" name="amount" value="{{ $scholarship->amount }}" required><br><br>
 
-    <label>Description:</label><br>
-    <textarea name="description" required>{{ $scholarship->description }}</textarea><br><br>
+    <label>Description:</label>
+    <input type="text" name="description" value="{{ $scholarship->description }}"><br><br>
 
     <button type="submit">Update</button>
 </form>
 
 </body>
 </html>
-

@@ -38,25 +38,29 @@ class ScholarshipController extends Controller
 
     public function edit(Scholarship $scholarship)
     {
-        return view('scholarships.edit', compact('scholarship'));
-    }
+    return view('scholarships.edit', compact('scholarship'));
+}
+
 
     public function update(Request $request, Scholarship $scholarship)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'description' => 'nullable|string'
-        ]);
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'amount' => 'required|numeric|min:0',
+        'description' => 'nullable|string',
+    ]);
 
-        $scholarship->update($data);
-        return redirect()->route('scholarships.index')->with('success', 'Scholarship updated.');
-    }
+    $scholarship->update($data);
 
-    public function destroy(Scholarship $scholarship)
-    {
-        $scholarship->students()->detach();
-        $scholarship->delete();
-        return redirect()->route('scholarships.index')->with('success', 'Scholarship deleted.');
-    }
+    return redirect()->route('scholarships.index')->with('success', 'Scholarship updated successfully!');
+}
+
+
+   public function destroy(Scholarship $scholarship)
+   {
+    $scholarship->delete();
+
+    return redirect()->route('scholarships.index')->with('success', 'Scholarship deleted successfully!');
+}
+
 }
