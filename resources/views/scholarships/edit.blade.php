@@ -4,24 +4,25 @@
     <title>Edit Scholarship</title>
 </head>
 <body>
-    <h1>Edit Scholarship</h1>
 
-    <form action="{{ route('scholarships.update', $scholarship->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+<h1>Edit Scholarship</h1>
 
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ $scholarship->name }}" required><br><br>
+<form action="{{ route('scholarships.update', $scholarship->id) }}" method="POST">
+    @csrf
+    @method('PUT')
 
-        <label>Amount:</label>
-        <input type="number" name="amount" value="{{ $scholarship->amount }}" required><br><br>
+    <label>Name:</label><br>
+    <input type="text" name="name" value="{{ $scholarship->name }}" required><br><br>
 
-        <label>Description:</label>
-        <textarea name="description" required>{{ $scholarship->description }}</textarea><br><br>
+    <label>Amount:</label><br>
+    <input type="number" name="amount" value="{{ $scholarship->amount }}" required><br><br>
 
-        <button type="submit">Update</button>
-    </form>
+    <label>Description:</label><br>
+    <textarea name="description" required>{{ $scholarship->description }}</textarea><br><br>
 
-    <a href="{{ route('scholarships.index') }}">← Back to List</a>
+    <button type="submit">Update</button>
+</form>
+
 </body>
 </html>
+

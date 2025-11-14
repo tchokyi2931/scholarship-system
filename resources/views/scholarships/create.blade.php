@@ -4,22 +4,23 @@
     <title>Add Scholarship</title>
 </head>
 <body>
-    <h1>Add New Scholarship</h1>
 
-    <form action="{{ route('scholarships.store') }}" method="POST">
-        @csrf
-        <label>Name:</label>
-        <input type="text" name="name" required><br><br>
+<h1>Add Scholarship</h1>
 
-        <label>Amount:</label>
-        <input type="number" name="amount" required><br><br>
+<form action="{{ route('scholarships.store') }}" method="POST">
+    @csrf
 
-        <label>Description:</label>
-        <textarea name="description" required></textarea><br><br>
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
 
-        <button type="submit">Save</button>
-    </form>
+    <label>Amount:</label><br>
+    <input type="number" name="amount" required><br><br>
 
-    <a href="{{ route('scholarships.index') }}">← Back to List</a>
+    <label>Description:</label><br>
+    <textarea name="description" required></textarea><br><br>
+
+    <button type="submit">Save</button>
+</form>
+
 </body>
 </html>

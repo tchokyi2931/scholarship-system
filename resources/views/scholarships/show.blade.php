@@ -4,19 +4,22 @@
     <title>Scholarship Details</title>
 </head>
 <body>
-    <h1>{{ $scholarship->name }}</h1>
 
-    <p><strong>Amount:</strong> {{ $scholarship->amount }}</p>
-    <p><strong>Description:</strong> {{ $scholarship->description }}</p>
+<h1>Scholarship Details</h1>
 
-    <a href="{{ route('scholarships.edit', $scholarship->id) }}">Edit</a>
-    <form action="{{ route('scholarships.destroy', $scholarship->id) }}" method="POST" style="display:inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" onclick="return confirm('Delete this scholarship?')">Delete</button>
-    </form>
+<p><strong>Name:</strong> {{ $scholarship->name }}</p>
+<p><strong>Amount:</strong> ₹{{ $scholarship->amount }}</p>
+<p><strong>Description:</strong> {{ $scholarship->description }}</p>
 
-    <br><br>
-    <a href="{{ route('scholarships.index') }}">← Back to All Scholarships</a>
+<h3>Students who got this scholarship:</h3>
+<ul>
+    @foreach ($scholarship->students as $student)
+        <li>{{ $student->name }} ({{ $student->course }})</li>
+    @endforeach
+</ul>
+
+<br>
+<a href="{{ route('scholarships.index') }}">Back</a>
+
 </body>
 </html>
