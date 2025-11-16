@@ -1,26 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Scholarship</title>
-</head>
-<body>
+@extends('layouts.app')
 
-<h1>Add Scholarship</h1>
+@section('content')
+<div class="card shadow-sm p-4">
+    <h2>Add Scholarship</h2>
 
-<form action="{{ route('scholarships.store') }}" method="POST">
-    @csrf
+    <form action="{{ route('scholarships.store') }}" method="POST">
+        @csrf
 
-    <label>Name:</label>
-    <input type="text" name="name" required><br><br>
+        <div class="mb-3">
+            <label class="form-label">Name:</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
 
-    <label>Amount:</label>
-    <input type="number" name="amount" required><br><br>
+        <div class="mb-3">
+            <label class="form-label">Amount:</label>
+            <input type="number" name="amount" class="form-control" required>
+        </div>
 
-    <label>Description:</label>
-    <input type="text" name="description"><br><br>
+        <div class="mb-3">
+            <label class="form-label">Description:</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
 
-    <button type="submit">Save</button>
-</form>
+        <button class="btn btn-primary">Save</button>
+        <a href="{{ route('scholarships.index') }}" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+@endsection
 
-</body>
-</html>

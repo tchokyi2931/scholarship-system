@@ -13,6 +13,7 @@ class Scholarship extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class);
-    }
+    return $this->hasMany(Student::class);
+}
+
 }

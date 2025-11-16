@@ -10,7 +10,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with('scholarships')->paginate(10);
+        $students = Student::with('scholarship')->get();
         return view('students.index', compact('students'));
     }
 
@@ -23,52 +23,53 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email',
-            'course' => 'required|string|max:255',
-            'scholarships' => 'array|exists:scholarships,id' // optional
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'course' => 'required|string',
+            'scholarship_id' => 'nullable|exists:scholarships,id',
         ]);
 
-        $student = Student::create($data);
-        if (!empty($data['scholarships'])) {
-            $student->scholarships()->sync($data['scholarships']);
-        }
+        Student::create($data);
 
-        return redirect()->route('students.index')->with('success', 'Student created.');
+        return redirect()->route('students.index')
+                         ->with('success', 'Student added successfully');
     }
 
-    public function show(Student $student)
+    public function show($id)
     {
-        $student->load('scholarships');
+        $student = Student::with('scholarship')->findOrFail($id);
         return view('students.show', compact('student'));
     }
 
-    public function edit(Student $student)
+    public function edit($id)
     {
+        $student = Student::findOrFail($id);
         $scholarships = Scholarship::all();
-        $student->load('scholarships');
         return view('students.edit', compact('student', 'scholarships'));
     }
 
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => "required|email|unique:students,email,{$student->id}",
-            'course' => 'required|string|max:255',
-            'scholarships' => 'array|exists:scholarships,id'
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'course' => 'required|string',
+            'scholarship_id' => 'nullable|exists:scholarships,id',
         ]);
 
+        $student = Student::findOrFail($id);
         $student->update($data);
-        $student->scholarships()->sync($data['scholarships'] ?? []);
 
-        return redirect()->route('students.index')->with('success', 'Student updated.');
+        return redirect()->route('students.index')
+                         ->with('success', 'Student updated successfully');
     }
 
-    public function destroy(Student $student)
+    public function destroy($id)
     {
-        $student->scholarships()->detach();
+        $student = Student::findOrFail($id);
         $student->delete();
-        return redirect()->route('students.index')->with('success', 'Student deleted.');
+
+        return redirect()->route('students.index')
+                         ->with('success', 'Student deleted successfully');
     }
 }

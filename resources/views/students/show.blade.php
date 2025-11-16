@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Student Details</title>
-</head>
-<body>
-    <h1>{{ $student->name }}</h1>
+@extends('layouts.app')
+
+@section('content')
+<div class="card shadow-sm p-4">
+    <h2>Student Details</h2>
+
+    <p><strong>Name:</strong> {{ $student->name }}</p>
     <p><strong>Email:</strong> {{ $student->email }}</p>
     <p><strong>Course:</strong> {{ $student->course }}</p>
-    <p><strong>Scholarships:</strong></p>
-<ul>
-    @foreach ($student->scholarships as $scholarship)
-        <li>{{ $scholarship->name }} (₹{{ $scholarship->amount }})</li>
-    @endforeach
-</ul>
+    <p><strong>Scholarship:</strong> {{ $student->scholarship->name ?? 'None' }}</p>
 
-    <a href="{{ route('students.index') }}">Back to List</a>
-</body>
-</html>
+    <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3">Back</a>
+</div>
+@endsection

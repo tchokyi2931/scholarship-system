@@ -1,25 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Scholarship Details</title>
-</head>
-<body>
+@extends('layouts.app')
 
-<h1>Scholarship Details</h1>
+@section('content')
+<div class="card shadow-sm p-4">
+    <h2>Scholarship Details</h2>
 
-<p><strong>Name:</strong> {{ $scholarship->name }}</p>
-<p><strong>Amount:</strong> ₹{{ $scholarship->amount }}</p>
-<p><strong>Description:</strong> {{ $scholarship->description }}</p>
+    <p><strong>Name:</strong> {{ $scholarship->name }}</p>
+    <p><strong>Amount:</strong> ₹{{ $scholarship->amount }}</p>
+    <p><strong>Description:</strong> {{ $scholarship->description ?: 'N/A' }}</p>
 
-<h3>Students who got this scholarship:</h3>
-<ul>
-    @foreach ($scholarship->students as $student)
-        <li>{{ $student->name }} ({{ $student->course }})</li>
-    @endforeach
-</ul>
+    <h4>Students Assigned:</h4>
+    <ul class="list-group">
+        @forelse ($scholarship->students as $student)
+            <li class="list-group-item">
+                {{ $student->name }} ({{ $student->email }})
+            </li>
+        @empty
+            <li class="list-group-item text-muted">No students assigned.</li>
+        @endforelse
+    </ul>
 
-<br>
-<a href="{{ route('scholarships.index') }}">Back</a>
+    <a href="{{ route('scholarships.index') }}" class="btn btn-secondary mt-3">Back</a>
+</div>
+@endsection
 
-</body>
-</html>
