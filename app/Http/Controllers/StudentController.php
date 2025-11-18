@@ -10,7 +10,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with('scholarship')->get();
+        $students = Student::with('scholarships')->get();
         return view('students.index', compact('students'));
     }
 
@@ -22,35 +22,39 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
             'course' => 'required|string',
             'scholarship_id' => 'nullable|exists:scholarships,id',
         ]);
 
-        Student::create($data);
+        // Create student
+        $student = Student::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'course' => $validated['course'],
+        ]);
+
+        // Attach scholarship through pivot table
+        if ($request->scholarship_id) {
+            $student->scholarships()->attach($request->scholarship_id);
+        }
 
         return redirect()->route('students.index')
                          ->with('success', 'Student added successfully');
     }
 
-    public function show($id)
-    {
-        $student = Student::with('scholarship')->findOrFail($id);
-        return view('students.show', compact('student'));
-    }
-
     public function edit($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::with('scholarships')->findOrFail($id);
         $scholarships = Scholarship::all();
         return view('students.edit', compact('student', 'scholarships'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
             'course' => 'required|string',
@@ -58,7 +62,20 @@ class StudentController extends Controller
         ]);
 
         $student = Student::findOrFail($id);
-        $student->update($data);
+
+        // update student main info
+        $student->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'course' => $validated['course'],
+        ]);
+
+        // Sync scholarship (replace old with new)
+        if ($request->scholarship_id) {
+            $student->scholarships()->sync([$request->scholarship_id]);
+        } else {
+            $student->scholarships()->detach();  
+        }
 
         return redirect()->route('students.index')
                          ->with('success', 'Student updated successfully');
@@ -67,6 +84,7 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = Student::findOrFail($id);
+        $student->scholarships()->detach(); // clean pivot
         $student->delete();
 
         return redirect()->route('students.index')

@@ -13,11 +13,11 @@ class Student extends Model
         'name',
         'email',
         'course',
-        'scholarship_id',
     ];
 
-    public function scholarship()
+    public function scholarships()
     {
-        return $this->belongsTo(Scholarship::class);
+        return $this->belongsToMany(Scholarship::class);
     }
 }
+
